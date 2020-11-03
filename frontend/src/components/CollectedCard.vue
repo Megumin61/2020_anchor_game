@@ -2,7 +2,7 @@
   <div class="collected_card">
     <van-image
       class="collected_card_img"
-      :src="require('../assets/cards/small/' + i + '.jpg')"
+      :src="require('../assets/cards/' + i + '.jpg')"
     >
       <template v-slot:loading>
         <van-loading type="spinner" size="20" />

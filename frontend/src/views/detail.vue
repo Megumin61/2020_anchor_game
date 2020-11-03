@@ -1,10 +1,10 @@
 <template>
   <div class="detail page bg2">
-    <div style="visibility: hidden;">placeholder</div>
+    <div style="visibility: hidden;height:0;">placeholder</div>
 
     <van-image
       class="detail_img"
-      :src="require('../assets/cards/small/' + $route.params.card_id + '.jpg')"
+      :src="require('../assets/cards/' + $route.params.card_id + '.jpg')"
     >
       <template v-slot:loading>
         <van-loading type="spinner" size="20" />

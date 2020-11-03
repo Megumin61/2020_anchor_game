@@ -9,7 +9,8 @@ export default {
   name: 'App',
   async mounted() {
     this.$router.push({
-      path: '/map',
+      // path: '/result/card/1',
+      path: '/index',
     });
   },
 };
@@ -26,6 +27,8 @@ body {
   background-size: 100vw 100vh;
   min-height: 100vh;
   min-width: 100vw;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 .bg1 {
   background-image: url('./assets/bg1.png');
