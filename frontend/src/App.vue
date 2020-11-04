@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <van-overlay style="z-index=10000;" :show="Boolean(g._showLoading)">
-      <div style="z-index=10000;" class="loading_wrapper" @click.stop>
-        <van-loading size="50px" text-size="16px" vertical
-          >加载中...</van-loading
-        >
-      </div>
-    </van-overlay>
-    <van-notice-bar
-      v-show="Boolean(g._showTips)"
-      style="text-align:center; z-index: 10000; position: fixed; top: 0; left: 0; width: 100vw"
-    >
-      长按保存图片
-    </van-notice-bar>
+    <div class="up">
+      <van-overlay class="up" :show="Boolean(g._showLoading)">
+        <div class="loading_wrapper up" @click.stop>
+          <van-loading size="50px" text-size="16px" vertical
+            >加载中...</van-loading
+          >
+        </div>
+      </van-overlay>
+      <van-notice-bar
+        v-show="Boolean(g._showTips)"
+        style="text-align:center; z-index: 10000; position: fixed; top: 0; left: 0; width: 100vw"
+      >
+        长按保存图片
+      </van-notice-bar>
+    </div>
+
     <router-view> </router-view>
   </div>
 </template>
@@ -40,10 +43,10 @@ export default {
             // 助力
             apis
               .helpFriend(user_id)
-              .then((res) => {
+              .then(res => {
                 Toast.success({ message: res.data.message });
               })
-              .catch((err) => {
+              .catch(err => {
                 Toast.fail({
                   message:
                     err.response.data.message || `未知错误${err.response.data}`,
@@ -76,6 +79,9 @@ body {
   padding: 0;
   min-height: 100vh;
   min-width: 100vw;
+}
+.up {
+  z-index: 10000;
 }
 .page {
   background-size: 100vw 100vh;

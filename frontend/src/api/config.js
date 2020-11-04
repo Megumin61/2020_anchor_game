@@ -2,7 +2,8 @@ import axios from 'axios';
 import { g } from '../config';
 import { Toast } from 'vant';
 
-const baseURL = 'http://127.0.0.1:5000';
+const baseURL = 'http://localhost:5000';
+// const baseURL = 'https://zekaio.cn/2020/anchor/game/api'
 const wechatBaseURL = 'https://hemc.100steps.net/2020/wechat';
 
 // axios配置
