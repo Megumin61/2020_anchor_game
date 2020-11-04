@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { g } from '../config';
 import { Toast } from 'vant';
 
 const baseURL = 'http://127.0.0.1:5000';
@@ -21,12 +22,11 @@ export const wxInstance = axios.create({
   withCredentials: true,
 });
 
-function succFunc(res) {
-  console.log(res.data);
+function defaultSuccFunc(res) {
   return Promise.resolve(res);
 }
 
-function failFunc(err) {
+function defaultFailFunc(err) {
   if (!err.response) {
     Toast.fail({
       message: '服务器无法响应，请稍后再试',
@@ -63,11 +63,22 @@ function failFunc(err) {
   return new Promise(() => {});
 }
 
+function succFunc(res) {
+  g.hideLoading();
+  return defaultSuccFunc(res);
+}
+
+function failFunc(err) {
+  g.hideLoading();
+  return defaultFailFunc(err);
+}
+
 instance.interceptors.response.use(succFunc, failFunc);
-wxInstance.interceptors.response.use(succFunc, failFunc);
+wxInstance.interceptors.response.use(defaultSuccFunc, defaultFailFunc);
 
 instance.interceptors.request.use(
   (config) => {
+    g.showLoading();
     if (/get/i.test(config.method)) {
       config.params = config.params || {};
       config.params.timestamp = new Date().getTime();

@@ -64,11 +64,12 @@
 // import wx from 'weixin-js-sdk';
 import { apis } from '../api/apis';
 import { Toast } from 'vant';
+import { sentences } from '../config';
 export default {
   name: 'game',
   data: () => {
     return {
-      text: '生活就像海洋，只有意志坚强的人才能到彼岸',
+      text: '',
       remain: 3,
       recording: false,
       recordFinished: false,
@@ -133,6 +134,8 @@ export default {
     },
   },
   async mounted() {
+    this.text = sentences[Math.floor(Math.random() * 4)];
+
     // 获取jssdk需要的配置信息
 
     // apis.wxconfig().then(res => {

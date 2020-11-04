@@ -1,18 +1,5 @@
 <template>
   <div class="result page bg2">
-    <van-overlay style="z-index=10000;" :show="showOverlay">
-      <div style="z-index=10000;" class="result_loading_wrapper" @click.stop>
-        <van-loading size="50px" text-size="16px" vertical
-          >加载中...</van-loading
-        >
-      </div>
-    </van-overlay>
-    <van-notice-bar
-      v-show="showTips"
-      style="text-align:center; z-index: 10000; position: fixed; top: 0; left: 0; width: 100vw"
-    >
-      长按保存图片
-    </van-notice-bar>
     <van-image
       :class="this.$route.params.type == 'card' ? card : debris"
       :src="require('../assets/cards/' + imgName)"
@@ -48,14 +35,13 @@
 <script>
 import { Dialog, ImagePreview, Toast } from 'vant';
 import { apis } from '../api/apis';
+import { g } from '../config';
 export default {
   name: 'result',
   data: () => {
     return {
       card: 'result_card',
       debris: 'result_debris',
-      showOverlay: false,
-      showTips: false,
     };
   },
   methods: {
@@ -66,19 +52,16 @@ export default {
       this.$router.push({ path: '/game' });
     },
     showShareImage() {
-      this.showOverlay = true;
       apis
         .getQRCode(this.$route.params.card_id)
         .then((res) => {
           // 返回base64编码的图片
-          this.showTips = true;
-          let that = this;
+          g.showTips();
           ImagePreview({
             images: [res.data.data],
             showIndex: false,
             onClose() {
-              console.log('close');
-              that.showTips = false;
+              g.hideTips();
             },
           });
         })
@@ -87,9 +70,6 @@ export default {
             message:
               err.response.data.message || `未知错误${err.response.data}`,
           });
-        })
-        .finally(() => {
-          this.showOverlay = false;
         });
     },
   },
@@ -133,19 +113,6 @@ export default {
         return '获得卡牌碎片';
       }
       return '';
-    },
-  },
-  watch: {
-    showOverlay: function(value) {
-      if (value) {
-        let that = this;
-        setTimeout(() => {
-          if (that.showOverlay == true) {
-            that.showOverlay = false;
-            that.showTips = false;
-          }
-        }, 5000);
-      }
     },
   },
 };

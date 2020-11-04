@@ -24,6 +24,9 @@ Vue.use(Col)
   .use(Popup)
   .use(Picker);
 
+Vue.prototype.$showLoading = true;
+Vue.prototype.$showTips = false;
+
 new Vue({
   router,
   render: (h) => h(App),

@@ -1,18 +1,5 @@
 <template>
   <div class="detail page bg2">
-    <van-overlay :show="showOverlay">
-      <div class="detail_loading_wrapper" @click.stop>
-        <van-loading size="50px" text-size="16px" vertical
-          >加载中...</van-loading
-        >
-      </div>
-    </van-overlay>
-    <van-notice-bar
-      v-show="showTips"
-      style="text-align:center; z-index: 10000; position: fixed; top: 0; left: 0; width: 100vw"
-    >
-      长按保存图片
-    </van-notice-bar>
     <van-image
       class="detail_img"
       :src="require('../assets/cards/' + $route.params.card_id + '.jpg')"
@@ -37,29 +24,24 @@
 <script>
 import { ImagePreview, Toast } from 'vant';
 import { apis } from '../api/apis';
+import { g } from '../config';
 export default {
   name: 'detail',
-  data: () => {
-    return { showOverlay: false, showTips: false };
-  },
   methods: {
     back() {
       this.$router.push({ path: '/map' });
     },
     showShareImage() {
-      this.showOverlay = true;
       apis
         .getQRCode(this.$route.params.card_id)
         .then((res) => {
           // 返回base64编码的图片
-          this.showTips = true;
-          let that = this;
+          g.showTips();
           ImagePreview({
             images: [res.data.data],
             showIndex: false,
             onClose() {
-              console.log('close');
-              that.showTips = false;
+              g.hideTips();
             },
           });
         })
@@ -68,21 +50,7 @@ export default {
             message:
               err.response.data.message || `未知错误${err.response.data}`,
           });
-        })
-        .finally(() => {
-          this.showOverlay = false;
         });
-    },
-  },
-  watch: {
-    showOverlay: function(value) {
-      if (value) {
-        let that = this;
-        setTimeout(() => {
-          that.showOverlay = false;
-          that.showTips = false;
-        }, 5000);
-      }
     },
   },
 };

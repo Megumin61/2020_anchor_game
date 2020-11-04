@@ -28,7 +28,7 @@ export let apis = {
 
   /**
    * 集齐后收集用户信息
-   * POST /user
+   * POST /user/info
    *
    * @param name 姓名
    * @param tel 手机号
@@ -41,7 +41,7 @@ export let apis = {
    */
   saveUserInfo: (name, tel, campus) => {
     return instance({
-      url: '/user',
+      url: '/user/info',
       method: 'post',
       data: { name, tel, campus },
     });

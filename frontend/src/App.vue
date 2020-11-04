@@ -1,15 +1,35 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <van-overlay style="z-index=10000;" :show="Boolean(g._showLoading)">
+      <div style="z-index=10000;" class="loading_wrapper" @click.stop>
+        <van-loading size="50px" text-size="16px" vertical
+          >加载中...</van-loading
+        >
+      </div>
+    </van-overlay>
+    <van-notice-bar
+      v-show="Boolean(g._showTips)"
+      style="text-align:center; z-index: 10000; position: fixed; top: 0; left: 0; width: 100vw"
+    >
+      长按保存图片
+    </van-notice-bar>
+    <router-view> </router-view>
   </div>
 </template>
 
 <script>
 import { Dialog, Toast } from 'vant';
 import { apis } from './api/apis';
+import { g } from './config';
+import { preload } from './preload';
+
 export default {
   name: 'App',
+  data: () => {
+    return { g };
+  },
   async mounted() {
+    await preload();
     apis.getUserInfo();
     if (this.$route.name == 'index' && this.$route.query.uid) {
       let user_id = this.$route.query.uid;
@@ -69,5 +89,11 @@ body {
 }
 .bg2 {
   background-image: url('./assets/bg2.png');
+}
+.loading_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 </style>
