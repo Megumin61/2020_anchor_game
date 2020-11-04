@@ -1,6 +1,7 @@
 class BaseConfig:
     begin = '2020-11-4 0:00:00'  # 开始时间
     end = '2020-11-20 0:00:00'  # 结束时间
+    frontend_baseurl = ''  # 前端小游戏地址
 
 
 DatabaseConfig = dict(

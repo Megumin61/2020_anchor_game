@@ -100,7 +100,7 @@ def draw_card(openid: str):
             return _draw_card_return(finish=True, winner=True, info=True)
         else:
             if _check_info():  # 如果填写信息少于五人
-                return _draw_card_return(finish=True, winner=True)
+                return {**_draw_card_return(finish=True, winner=True), 'count': Info.query.count() + 1}
             else:  # 已有五人填写信息
                 return _draw_card_return(finish=True)
 
@@ -130,7 +130,8 @@ def draw_card(openid: str):
         user.finish_time = datetime.datetime.now()
         db.session.commit()
         if _check_info():  # 如果填写信息少于五人
-            return _draw_card_return(index=card_id, card=is_card, finish=True, winner=True)
+            return {**_draw_card_return(index=card_id, card=is_card, finish=True, winner=True),
+                    'count': Info.query.count() + 1}
         else:  # 已有五人填写信息
             return _draw_card_return(index=card_id, card=is_card, finish=True)
     else:
@@ -141,12 +142,11 @@ def help_friend(user_id: int, openid: str):
     current_user: User = _get_user_by_openid(openid)
     be_helper: User = User.query.get(user_id)
 
-    if current_user.user_id == be_helper.user_id:
-        raise HttpError(403, '无法给自己助力')
-
     if be_helper is None:
         raise HttpError(404, '用户不存在')
 
+    if current_user.user_id == be_helper.user_id:
+        raise HttpError(403, '无法给自己助力')
     helper: Helper = (
         Helper
             .query

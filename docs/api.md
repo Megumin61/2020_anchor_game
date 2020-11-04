@@ -62,7 +62,8 @@ PUT /card
     "index": 2,
     "finish": false,
     "winner": false,
-    "info": false
+    "info": false,
+    "count":0
 }
 ```
 
@@ -75,6 +76,8 @@ PUT /card
 `winner`：是否是前五个集齐的
 
 `info`：是否填写信息
+
+`count`：集齐人数，只有winner=true&&info=false会返回
 
 ### 错误处理
 
@@ -96,7 +99,9 @@ GET /user/qrcode/{card_id}
 }
 ```
 
+### 错误处理
 
+`400`：card_id无效
 
 ## 助力
 

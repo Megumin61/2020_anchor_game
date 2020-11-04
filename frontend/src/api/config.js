@@ -22,6 +22,7 @@ export const wxInstance = axios.create({
 });
 
 function succFunc(res) {
+  console.log(res.data);
   return Promise.resolve(res);
 }
 
@@ -31,12 +32,23 @@ function failFunc(err) {
       message: '服务器无法响应，请稍后再试',
     });
   } else {
+    // err.response.data
     switch (err.response.status) {
       // 未登录
       case 401:
-        window.location.href = `${wechatBaseURL}/auth?state=${encodeURIComponent(
-          window.location.href,
-        )}`;
+        console.log(encodeURIComponent(window.location.href));
+        // window.location.href = `${wechatBaseURL}/auth?state=${encodeURIComponent(
+        //   window.location.href
+        // )}`;
+        Toast.fail({
+          message: '请先登录',
+        });
+        break;
+      // 不在活动时间
+      case 410:
+        Toast.fail({
+          message: err.response.data.message,
+        });
         break;
       // 服务器错误
       case 500:
@@ -54,34 +66,15 @@ function failFunc(err) {
 instance.interceptors.response.use(succFunc, failFunc);
 wxInstance.interceptors.response.use(succFunc, failFunc);
 
-// instance.interceptors.response.use(
-//   res => {
-//     return Promise.resolve(res);
-//   },
-//   err => {
-//     if (!err.response) {
-//       Toast.fail({
-//         message: '服务器无法响应，请稍后再试',
-//       });
-//     } else {
-//       console.log(err.response);
-//       switch (err.response.status) {
-//         // 未登录
-//         case 401:
-//           window.location.href = `${wechatBaseURL}/auth?state=${encodeURIComponent(
-//             window.location.href,
-//           )}`;
-//           break;
-//         // 服务器错误
-//         case 500:
-//           Toast.fail({
-//             message: '服务器错误，请稍后再试',
-//           });
-//           break;
-//         default:
-//           return Promise.reject(err);
-//       }
-//     }
-//     return new Promise(() => {});
-//   },
-// );
+instance.interceptors.request.use(
+  (config) => {
+    if (/get/i.test(config.method)) {
+      config.params = config.params || {};
+      config.params.timestamp = new Date().getTime();
+    }
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);

@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { apis } from '../api/apis';
 import CollectedCard from '../components/CollectedCard';
 import NotCollectedCard from '../components/NotCollectedCard';
 export default {
@@ -84,41 +85,18 @@ export default {
   data: () => {
     return {
       img_path: '../assets/cards/',
-      cards: [
-        {
-          collected: true,
-          progress: 3,
-        },
-        {
-          collected: false,
-          progress: 1,
-        },
-        {
-          collected: true,
-          progress: 1,
-        },
-        {
-          collected: false,
-          progress: 1,
-        },
-        {
-          collected: false,
-          progress: 2,
-        },
-        {
-          collected: true,
-          progress: 1,
-        },
-        {
-          collected: false,
-          progress: 1,
-        },
-        {
-          collected: false,
-          progress: 1,
-        },
-      ],
+      cards: [],
     };
+  },
+  async mounted() {
+    apis
+      .getUserInfo()
+      .then((res) => {
+        this.cards = res.data.cards;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     back() {

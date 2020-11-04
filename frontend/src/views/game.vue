@@ -62,7 +62,7 @@
 
 <script>
 // import wx from 'weixin-js-sdk';
-// import { apis } from '../api/apis';
+import { apis } from '../api/apis';
 import { Toast } from 'vant';
 export default {
   name: 'game',
@@ -82,37 +82,59 @@ export default {
     },
     touchstart(e) {
       e.preventDefault();
-      this.recording = true;
-      this.goodRecord = false;
-      setTimeout(() => {
-        this.goodRecord = true;
-      }, 1000);
+      if (this.remain) {
+        this.recording = true;
+        this.goodRecord = false;
+        setTimeout(() => {
+          this.goodRecord = true;
+        }, 1000);
+      }
     },
     touchend(e) {
       e.preventDefault();
-      this.recording = false;
-      if (this.goodRecord) {
-        // 录音完毕
-        // 卡牌旋转
-        this.recordFinished = true;
-        setTimeout(() => {
-          this.recordFinished = false;
-          this.cardFly = true;
-          setTimeout(() => {
-            this.cardFly = false;
-            if (Math.floor(Math.random() * 2)) {
-              this.$router.push({ path: `/result/card/1` });
-            } else {
-              this.$router.push({ path: `/result/debris/1` });
-            }
-          }, 1820);
-        }, 2000);
-      } else {
-        Toast.fail({ message: '录音时间必须要大于一秒' });
+      if (this.remain) {
+        this.recording = false;
+        if (this.goodRecord) {
+          apis
+            .drawCard()
+            .then((res) => {
+              // 录音完毕，卡牌旋转
+              this.recordFinished = true;
+              setTimeout(() => {
+                this.recordFinished = false;
+                this.cardFly = true;
+                setTimeout(() => {
+                  this.cardFly = false;
+                  // 进入新页面
+                  this.$router.push({
+                    path: `/result/${res.data.card ? 'card' : 'debris'}/${
+                      res.data.index
+                    }`,
+                    query: {
+                      finish: res.data.finish,
+                      winner: res.data.winner,
+                      info: res.data.info,
+                      count: res.data.count,
+                    },
+                  });
+                }, 1820);
+              }, 2000);
+            })
+            .catch((err) => {
+              Toast.fail({
+                message:
+                  err.response.data.message || `未知错误${err.response.data}`,
+              });
+            });
+        } else {
+          Toast.fail({ message: '录音时间必须要大于一秒' });
+        }
       }
     },
   },
   async mounted() {
+    // 获取jssdk需要的配置信息
+
     // apis.wxconfig().then(res => {
     //   wx.config({
     //     debug: false,
@@ -123,6 +145,17 @@ export default {
     //     jsApiList: ['startRecord', 'stopRecord'],
     //   });
     // });
+
+    apis
+      .getUserInfo()
+      .then((res) => {
+        console.log('获取用户信息');
+        this.remain = res.data.remain;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     // let record_btn = document.getElementById('record_btn');
     // console.log(record_btn);
     // record_btn.addEventListener('touchstart', e => {

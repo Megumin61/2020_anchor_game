@@ -1,5 +1,18 @@
 <template>
   <div class="result page bg2">
+    <van-overlay style="z-index=10000;" :show="showOverlay">
+      <div style="z-index=10000;" class="result_loading_wrapper" @click.stop>
+        <van-loading size="50px" text-size="16px" vertical
+          >加载中...</van-loading
+        >
+      </div>
+    </van-overlay>
+    <van-notice-bar
+      v-show="showTips"
+      style="text-align:center; z-index: 10000; position: fixed; top: 0; left: 0; width: 100vw"
+    >
+      长按保存图片
+    </van-notice-bar>
     <van-image
       :class="this.$route.params.type == 'card' ? card : debris"
       :src="require('../assets/cards/' + imgName)"
@@ -19,7 +32,11 @@
       @click="signup()"
     />
 
-    <img class="result_help result_btn" src="../assets/share.png" />
+    <img
+      class="result_help result_btn"
+      src="../assets/share.png"
+      @click="showShareImage()"
+    />
     <img
       class="result_back result_btn"
       src="../assets/back.png"
@@ -29,12 +46,16 @@
 </template>
 
 <script>
+import { Dialog, ImagePreview, Toast } from 'vant';
+import { apis } from '../api/apis';
 export default {
   name: 'result',
   data: () => {
     return {
       card: 'result_card',
       debris: 'result_debris',
+      showOverlay: false,
+      showTips: false,
     };
   },
   methods: {
@@ -44,6 +65,57 @@ export default {
     back() {
       this.$router.push({ path: '/game' });
     },
+    showShareImage() {
+      this.showOverlay = true;
+      apis
+        .getQRCode(this.$route.params.card_id)
+        .then((res) => {
+          // 返回base64编码的图片
+          this.showTips = true;
+          let that = this;
+          ImagePreview({
+            images: [res.data.data],
+            showIndex: false,
+            onClose() {
+              console.log('close');
+              that.showTips = false;
+            },
+          });
+        })
+        .catch((err) => {
+          Toast.fail({
+            message:
+              err.response.data.message || `未知错误${err.response.data}`,
+          });
+        })
+        .finally(() => {
+          this.showOverlay = false;
+        });
+    },
+  },
+  async mounted() {
+    let query = this.$route.query;
+    console.log(query);
+    if (
+      query.finish === 'true' &&
+      query.winner === 'true' &&
+      query.info === 'false'
+    ) {
+      Dialog.confirm({
+        message: `我是预言家，昨晚我查验了你的身份，你是集卡成功的第${query.count}个幸运儿，快去填写你的信息领取你的专属礼品吧！`,
+      })
+        .then(() => {
+          this.$router.push({
+            path: '/info',
+          });
+        })
+        .catch(() => {});
+    } else if (query.finish === 'true' && query.winner === 'false') {
+      Dialog({
+        message:
+          '糟糕，就差一点点，礼品已经被领取完了(´༎ຶོρ༎ຶོ`)不过没关系！11月22日复赛现场和12月6日决赛现场还有更多惊喜在等你！',
+      });
+    }
   },
   computed: {
     imgName: function() {
@@ -61,6 +133,19 @@ export default {
         return '获得卡牌碎片';
       }
       return '';
+    },
+  },
+  watch: {
+    showOverlay: function(value) {
+      if (value) {
+        let that = this;
+        setTimeout(() => {
+          if (that.showOverlay == true) {
+            that.showOverlay = false;
+            that.showTips = false;
+          }
+        }, 5000);
+      }
     },
   },
 };
@@ -103,7 +188,7 @@ export default {
   /* margin: auto; */
 }
 .result_tip {
-  z-index: 10;
+  z-index: 1;
   color: #eeeeee;
   font-family: 'STHupo';
   text-shadow: 1px 1px 2px gray;
@@ -120,5 +205,11 @@ export default {
 }
 .result_btn {
   width: 50vw;
+}
+.result_loading_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 </style>
