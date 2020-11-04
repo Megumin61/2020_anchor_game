@@ -2,5 +2,9 @@
 仅供测试
 """
 from flask import session
+import uuid
+
+
 def set_openid():
-    session['openid'] = '2'
+    if session.get('openid') is None:
+        session['openid'] = str(uuid.uuid4())

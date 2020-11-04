@@ -8,7 +8,7 @@ class User(Model):
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     openid = db.Column(db.String(255), unique=True, nullable=False)
-    remain = db.Column(db.Integer, default=3, comment='每日剩余抽奖次数')
+    remain = db.Column(db.Integer, default=100, comment='每日剩余抽奖次数')
     extra_remain = db.Column(db.Integer, default=0, comment='好友助力获得的')
     update_day = db.Column(db.Date, default=datetime.date.today())
     finish_time = db.Column(db.DateTime, default=None)
