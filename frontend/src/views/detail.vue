@@ -20,7 +20,6 @@
 </template>
 
 <script>
-// $route.params.card_id
 export default {
   name: 'detail',
   data: () => {

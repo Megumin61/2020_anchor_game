@@ -154,10 +154,6 @@ export default {
   margin-right: 7.9vw;
 }
 
-.map_row1 {
-  /* margin-top: 10.8vh; */
-}
-
 .map_row2 {
   margin-top: 2.2vh;
 }

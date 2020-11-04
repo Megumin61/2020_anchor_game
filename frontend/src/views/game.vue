@@ -4,7 +4,7 @@
       <img class="game_pic" src="../assets/pic.png" @click="to_map()" />
     </div>
     <div class="game_text_wrap">
-      <img class="game_kuang" src="../assets/kuang1.png" />
+      <img class="game_kuang" src="../assets/kuang.png" />
       <div class="game_text_tips not_selected">
         不知道说些什么就试试这句话吧
       </div>
@@ -431,18 +431,18 @@ export default {
 @keyframes fly {
   0% {
     z-index: 5;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(-50%, 0, 0);
     opacity: 1;
   }
   18% {
-    transform: translate3d(0, 0%, 0) scale3d(2, 2, 1) rotateX(40deg);
+    transform: translate3d(-50%, 0%, 0) scale3d(2, 2, 1) rotateX(40deg);
   }
   40% {
-    transform: translate3d(0, -500%, 0) scale3d(0.5, 0.5, 1) rotateX(80deg);
+    transform: translate3d(-50%, -500%, 0) scale3d(0.5, 0.5, 1) rotateX(80deg);
     opacity: 0;
   }
   70% {
-    transform: translate3d(0, 100%, 0) scale3d(2, 2, 1) rotateX(40deg);
+    transform: translate3d(-50%, 100%, 0) scale3d(2, 2, 1) rotateX(40deg);
     opacity: 0;
   }
   100% {
