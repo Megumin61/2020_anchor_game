@@ -151,6 +151,50 @@ export default {
 </script>
 
 <style>
+.van-dialog {
+  background-image: url('./assets/dialog_bg.png') !important;
+  background-color: transparent;
+  border: none;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  /* min-height: 20vh; */
+}
+.van-dialog__content {
+  padding-top: 4em;
+  margin-bottom: 0.5em;
+  /* font-size: 10em; */
+  border: none !important;
+}
+.van-dialog__confirm {
+  background-color: #486978 !important;
+  color: #edf3ff !important;
+  font-size: 1.2em;
+  border-top-right-radius: 16px !important;
+  border: none !important;
+}
+.confirm_btn > .van-dialog__footer > .van-dialog__confirm {
+  border-top-right-radius: 16px !important;
+  border-top-left-radius: 16px !important;
+}
+.van-dialog__confirm:active {
+  color: #edf3ff !important;
+}
+.van-dialog__message {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  text-align: left;
+}
+.van-hairline--top::after {
+  border-top-width: 0px !important;
+}
+.van-dialog__cancel {
+  color: #212f4c !important;
+  background-color: #e5f1f6 !important;
+  font-size: 1.2em;
+  border-top-left-radius: 16px;
+  border: none !important;
+}
+
 body {
   margin: 0;
   padding: 0;

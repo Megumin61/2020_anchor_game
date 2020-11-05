@@ -94,6 +94,7 @@ export default {
       Dialog({
         message:
           '糟糕，就差一点点，礼品已经被领取完了(´༎ຶོρ༎ຶོ`)不过没关系！11月22日复赛现场和12月6日决赛现场还有更多惊喜在等你！',
+        className: 'confirm_btn',
       });
     }
   },
