@@ -26,5 +26,12 @@ export let sentences = [
   '生活就像海洋，只有意志坚强的人才能到达彼岸',
 ];
 
-// export let applicationFormURL = 'https://hemc.100steps.net/2020/anchor/form'
-export let applicationFormURL = 'https://zekaio.cn/2020/anchor/form';
+// export const applicationFormURL = 'https://zekaio.cn/2020/anchor/form';
+// export const baseURL = 'https://zekaio.cn/2020/anchor/game/api';
+// export const wechatBaseURL = 'https://zekaio.cn/2020/wechat';
+
+export const applicationFormURL = 'https://hemc.100steps.net/2020/anchor/form';
+export const baseURL = 'https://hemc.100steps.net/2020/anchor/game/api';
+export const wechatBaseURL = 'https://hemc.100steps.net/2020/wechat';
+
+// export const baseURL = 'http://localhost:5000';
