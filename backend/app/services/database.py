@@ -154,15 +154,21 @@ def help_friend(user_id: int, openid: str):
 
     if current_user.user_id == be_helper.user_id:
         raise HttpError(403, '无法给自己助力')
-    helper: Helper = (
+
+    helpers: typing.List[Helper] = (
         Helper
             .query
-            .filter_by(helper_user_id=current_user.user_id, be_helper_user_id=be_helper.user_id,
+            .filter_by(be_helper_user_id=be_helper.user_id,
                        date=datetime.date.today())
-            .first()
+            .all()
     )
-    if helper is not None:
-        raise HttpError(406, '今日已帮助过该用户')
+    if len(helpers) >= 2:
+        raise HttpError(406, '今日已有两位好友帮助该用户')
+
+    if helpers is not None:
+        for helper in helpers:
+            if helper.helper_user_id == current_user.user_id:
+                raise HttpError(406, '今日已帮助过该用户')
 
     be_helper.extra_remain = be_helper.extra_remain + 1
     helper: Helper = Helper(helper_user_id=current_user.user_id, be_helper_user_id=be_helper.user_id,

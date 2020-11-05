@@ -3,6 +3,7 @@
     <div class="game_pic_wrap">
       <img class="game_pic" src="../assets/pic.png" @click="to_map()" />
     </div>
+    <div style="clear: both"></div>
     <div class="game_text_wrap">
       <img class="game_kuang" src="../assets/kuang.png" />
       <div class="game_text_tips not_selected">
@@ -170,10 +171,10 @@ export default {
 
 <style scoped>
 .game {
-  display: flex;
+  /* display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
   padding: 3vh 0;
   box-sizing: border-box;
 }
@@ -183,17 +184,28 @@ export default {
   -webkit-user-select: none;
 }
 .game_pic_wrap {
+  position: relative;
   width: 100vw;
-  display: flex;
+  margin-top: 3vh;
+
+  /* margin-bottom: 5vh; */
+  /* margin-bottom: 3vh; */
+  /* display: flex;
   display: -webkit-flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-end; */
 }
 .game_pic {
+  /* position: absolute; */
+  float: right;
+  /* top: -3vh; */
+  right: 3vw;
   width: 25vw;
+  height: auto;
   margin-right: 3vw;
 }
 .game_text_wrap {
+  margin-top: 5vh;
   position: relative;
   width: 78.6vw;
   height: fit-content;
@@ -307,7 +319,7 @@ export default {
 .card_container {
   /*
     这个是不会动的时候
-    装卡的容器 背景是light 
+    装卡的容器 背景是light
      */
   position: relative;
   height: 20vh;
@@ -433,7 +445,7 @@ export default {
     opacity: 1;
   }
   18% {
-    transform: translate3d(-50%, 0%, 0) scale3d(2, 2, 1) rotateX(40deg);
+    transform: translate3d(-50%, 0%, 0) scale3d(1, 1, 1) rotateX(40deg);
   }
   40% {
     transform: translate3d(-50%, -500%, 0) scale3d(0.5, 0.5, 1) rotateX(80deg);

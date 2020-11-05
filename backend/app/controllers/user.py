@@ -67,7 +67,7 @@ def get_qrcode():
     qr.add_data(BaseConfig.frontend_baseurl + '?uid=' + str(user.user_id))
     qr.make(fit=True)
 
-    img_qr = qr.make_image(fill_color="#3f454b", back_color="#ffffff").resize((656, 656), Image.ANTIALIAS)
+    img_qr = qr.make_image(fill_color="#d0dadb", back_color="#38474f").resize((589, 589), Image.ANTIALIAS)
     bg.paste(img_qr, (1433, 3202))
 
     jpg_bg = bg.convert('RGB')

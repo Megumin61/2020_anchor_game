@@ -35,6 +35,6 @@ export const baseURL = 'https://hemc.100steps.net/2020/anchor/game/api';
 export const wechatBaseURL = 'https://hemc.100steps.net/2020/wechat';
 
 // export const baseURL = 'http://localhost:5000';
-export const title = '爱上你主播小游戏';
+export const title = '寻声人';
 export const link = 'https://hemc.100steps.net/2020/anchor/game';
-export const imgUrl = 'https://hemc.100steps.net/2020/anchor/game/share.jpg';
+export const imgUrl = 'https://hemc.100steps.net/2020/anchor/game/share.png';
