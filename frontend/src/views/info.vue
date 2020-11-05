@@ -1,5 +1,6 @@
 <template>
-  <div id="info" class="info page bg2">
+  <div id="info" class="info page">
+    <img src="../assets/bg2.png" class="info_bg" id="info_bg" />
     <div class="info_title">恭喜你集齐卡牌</div>
     <div class="info_line"></div>
     <div class="info_tips_wrap">
@@ -70,6 +71,7 @@ export default {
         .saveUserInfo(this.name, this.tel, this.campus)
         .then((res) => {
           Toast({ message: res.data.message });
+          this.$router.push({ path: '/index' });
         })
         .catch((err) => {
           Toast.fail({
@@ -84,10 +86,8 @@ export default {
     },
     fixHeight() {
       let windowHeight = window.innerHeight;
-      let windowWidth = window.innerWidth;
       document.body.style.height = windowHeight + 'px';
-      document.getElementById('info').style.backgroundSize =
-        windowWidth + 'px ' + windowHeight + 'px';
+      document.getElementById('info_bg').style.height = windowHeight + 'px';
     },
   },
   async mounted() {
@@ -109,6 +109,14 @@ export default {
   align-items: center;
   min-height: 100vh;
   flex-direction: column;
+}
+.info_bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: -1;
 }
 
 .info_line {

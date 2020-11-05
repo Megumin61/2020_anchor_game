@@ -58,13 +58,14 @@ def _check_info() -> bool:
 
 def _draw_card_return(index: int = random.randint(1, 8), card: bool = random.randint(1, 10) <= 6, finish: bool = False,
                       winner: bool = False,
-                      info: bool = False) -> dict:
+                      info: bool = False, count=None) -> dict:
     return {
         'index': index,
         'card': card,
         'finish': finish,
         'winner': winner,
-        'info': info
+        'info': info,
+        'count': count
     }
 
 
@@ -95,17 +96,23 @@ def draw_card(openid: str):
     """
     user: User = _get_user_by_openid(openid)
 
-    if user.finish_time is not None:  # 已经集齐
-        if user.info:  # 已经填写信息
-            return _draw_card_return(finish=True, winner=True, info=True)
-        else:
-            if _check_info():  # 如果填写信息少于五人
-                return {**_draw_card_return(finish=True, winner=True), 'count': Info.query.count() + 1}
-            else:  # 已有五人填写信息
-                return _draw_card_return(finish=True)
-
     if user.total_remain == 0:
         raise HttpError(406, '抽卡次数已用完')
+
+    if user.finish_time is not None:  # 已经集齐
+        finish = True
+        winner = False
+        info = False
+        count = None
+        if user.info:  # 已经填写信息
+            winner = True
+            info = True
+        elif _check_info():  # 如果填写信息少于五人
+            winner = True
+            count = Info.query.count() + 1
+        user.reduce_remain()
+        db.session.commit()
+        return _draw_card_return(finish=finish, winner=winner, info=info, count=count)
 
     card: Card = _get_card_by_user_id(user.user_id)
 

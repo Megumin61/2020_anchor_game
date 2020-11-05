@@ -33,13 +33,12 @@ function defaultFailFunc(err) {
     switch (err.response.status) {
       // 未登录
       case 401:
-        console.log(encodeURIComponent(window.location.href));
-        // window.location.href = `${wechatBaseURL}/auth?state=${encodeURIComponent(
-        //   window.location.href
-        // )}`;
-        Toast.fail({
-          message: '请先登录',
-        });
+        window.location.href = `${wechatBaseURL}/auth?state=${encodeURIComponent(
+          window.location.href,
+        )}`;
+        // Toast.fail({
+        //   message: '请先登录',
+        // });
         break;
       // 不在活动时间
       case 410:

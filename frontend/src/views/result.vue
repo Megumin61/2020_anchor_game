@@ -23,6 +23,7 @@
       class="result_help result_btn"
       src="../assets/share.png"
       @click="showShareImage()"
+      v-show="this.$route.params.type == 'card'"
     />
     <img
       class="result_back result_btn"
@@ -75,7 +76,6 @@ export default {
   },
   async mounted() {
     let query = this.$route.query;
-    console.log(query);
     if (
       query.finish === 'true' &&
       query.winner === 'true' &&
@@ -154,7 +154,6 @@ export default {
   height: 5rem;
   width: 70vw;
   z-index: 0;
-  /* margin: auto; */
 }
 .result_tip {
   z-index: 1;

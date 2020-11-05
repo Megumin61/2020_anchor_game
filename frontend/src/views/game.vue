@@ -61,7 +61,7 @@
 </template>
 
 <script>
-// import wx from 'weixin-js-sdk';
+import wx from 'weixin-js-sdk';
 import { apis } from '../api/apis';
 import { Toast } from 'vant';
 import { sentences } from '../config';
@@ -75,6 +75,8 @@ export default {
       recordFinished: false,
       cardFly: false,
       goodRecord: false,
+
+      wxRecordTimeout: undefined,
     };
   },
   methods: {
@@ -89,6 +91,15 @@ export default {
         setTimeout(() => {
           this.goodRecord = true;
         }, 1000);
+
+        wx.startRecord();
+        this.wxRecordTimeout = setTimeout(() => {
+          wx.stopRecord({
+            success: () => {
+              console.log('停止录音');
+            },
+          });
+        }, 30000);
       }
     },
     touchend(e) {
@@ -96,6 +107,13 @@ export default {
       if (this.remain) {
         this.recording = false;
         if (this.goodRecord) {
+          clearTimeout(this.wxRecordTimeout);
+          wx.stopRecord({
+            success: () => {
+              console.log('停止录音');
+            },
+          });
+
           apis
             .drawCard()
             .then((res) => {
@@ -136,39 +154,16 @@ export default {
   async mounted() {
     this.text = sentences[Math.floor(Math.random() * 4)];
 
-    // 获取jssdk需要的配置信息
-
-    // apis.wxconfig().then(res => {
-    //   wx.config({
-    //     debug: false,
-    //     appId: res.appid,
-    //     timestamp: res.timestamp,
-    //     nonceStr: res.noncestr,
-    //     signature: res.signature,
-    //     jsApiList: ['startRecord', 'stopRecord'],
-    //   });
-    // });
-
     apis
       .getUserInfo()
       .then((res) => {
-        console.log('获取用户信息');
         this.remain = res.data.remain;
       })
       .catch((err) => {
-        console.log(err);
+        Toast.fail({
+          message: err.response.data.message || `未知错误${err.response.data}`,
+        });
       });
-
-    // let record_btn = document.getElementById('record_btn');
-    // console.log(record_btn);
-    // record_btn.addEventListener('touchstart', e => {
-    //   e.preventDefault();
-    //   // alert('touchstart');
-    // });
-    // record_btn.addEventListener('touchend', e => {
-    //   e.preventDefault();
-    //   alert('touchend');
-    // });
   },
 };
 </script>
@@ -193,22 +188,15 @@ export default {
   display: -webkit-flex;
   flex-direction: row;
   justify-content: flex-end;
-  /* margin-top: 3vh; */
 }
 .game_pic {
-  /* position: absolute; */
-
   width: 25vw;
   margin-right: 3vw;
 }
 .game_text_wrap {
-  /* background-image: url('../assets/kuang1.png');
-  background-size: 78.6vw 8rem;
-  background-repeat: no-repeat; */
   position: relative;
   width: 78.6vw;
   height: fit-content;
-  /* min-height: 8rem; */
   margin-left: 10.7vw;
   margin-top: 5vh;
 }
@@ -243,7 +231,6 @@ export default {
   margin-top: 10vh;
 }
 .game_speak {
-  /* margin-top: 0.5vh; */
   width: 60vw;
 }
 .game_tips {
@@ -255,11 +242,8 @@ export default {
   /* 装按钮的容器 */
   height: fit-content;
   width: 100vw;
-  /* margin-left: 5vw; */
   display: flex;
-  /* align-items: center; */
   display: -webkit-flex;
-  /* justify-content: center; */
   flex-wrap: nowrap;
   margin-top: 0.5vh;
 }
@@ -270,8 +254,6 @@ export default {
   background-size: contain;
   width: 60vw;
   height: 25vw;
-  /* height: auto; */
-  /* margin-top: 5%; */
 }
 .record_off {
   /* 不说话时 没有声波动画 */
@@ -327,19 +309,10 @@ export default {
     这个是不会动的时候
     装卡的容器 背景是light 
      */
-  /* background-image: url('../assets/light.png');
-  background-position: bottom;
-  background-size: contain;
-  background-repeat: no-repeat; */
   position: relative;
   height: 20vh;
-  /* height: fit-content; */
   width: 90vw;
   margin-top: 16vh;
-  /* margin-left: 5%; */
-  /* position: absolute; */
-  /* bottom: 2%; */
-  /* margin-bottom: 5vh; */
 }
 .game_light {
   position: absolute;
@@ -352,11 +325,6 @@ export default {
 .game_card {
   height: 20vh;
 }
-
-/* .cards_off {
-  /* height: 60%; */
-/* transform: scale(0.9); */
-/* } */
 
 #anim_card1 {
   position: absolute;
@@ -376,11 +344,7 @@ export default {
 #anim_card3 {
   position: absolute;
   bottom: 15%;
-  /* text-align: center; */
-  /* right: 35%;
-  left: 35%; */
   left: 50%;
-  /* margin: auto; */
   z-index: 3;
   transform: translate3d(-50%, 0, 0);
 }
@@ -439,24 +403,20 @@ export default {
 @keyframes roll_card3 {
   0% {
     z-index: 3;
-    /* transform: translate3d(0, 0, 0); */
     transform: translate3d(-50%, 0, 0);
   }
 
   30% {
     z-index: 1;
-    /* transform: translate3d(-75%, -100px, 0); */
     transform: translate3d(-125%, -3vh, 0);
   }
 
   60% {
-    /* transform: translate3d(75%, -100px, 0); */
     transform: translate3d(25%, -3vh, 0);
     z-index: 2;
   }
   100% {
     z-index: 3;
-    /* transform: translate3d(0, 0, 0); */
     transform: translate3d(-50%, 0, 0);
   }
 }

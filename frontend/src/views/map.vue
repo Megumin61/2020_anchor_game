@@ -76,6 +76,7 @@
 import { apis } from '../api/apis';
 import CollectedCard from '../components/CollectedCard';
 import NotCollectedCard from '../components/NotCollectedCard';
+import { Toast } from 'vant';
 export default {
   name: 'map',
   components: {
@@ -95,7 +96,9 @@ export default {
         this.cards = res.data.cards;
       })
       .catch((err) => {
-        console.log(err);
+        Toast.fail({
+          message: err.response.data.message || `未知错误${err.response.data}`,
+        });
       });
   },
   methods: {
