@@ -25,3 +25,6 @@ export let sentences = [
   '舞台是一个什么样的地方？灯光、掌声、短暂但热烈的爱',
   '生活就像海洋，只有意志坚强的人才能到达彼岸',
 ];
+
+// export let applicationFormURL = 'https://hemc.100steps.net/2020/anchor/form'
+export let applicationFormURL = 'https://zekaio.cn/2020/anchor/form';

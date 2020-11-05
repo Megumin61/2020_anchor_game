@@ -35,7 +35,7 @@
 <script>
 import { Dialog, ImagePreview, Toast } from 'vant';
 import { apis } from '../api/apis';
-import { g } from '../config';
+import { g, applicationFormURL } from '../config';
 export default {
   name: 'result',
   data: () => {
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     signup() {
-      window.location.href = 'http://hemc.100steps.net/2020/anchor';
+      window.location.href = applicationFormURL;
     },
     back() {
       this.$router.push({ path: '/game' });
@@ -124,9 +124,11 @@ export default {
   display: -webkit-flex;
   align-items: center;
   flex-direction: column;
+  padding: 3vh 0;
+  box-sizing: border-box;
 }
 .result_card {
-  margin-top: 10.6vh;
+  margin-top: 7.6vh;
   width: 47.8vw;
 }
 .result_debris {

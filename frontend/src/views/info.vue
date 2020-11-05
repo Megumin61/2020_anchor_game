@@ -1,5 +1,5 @@
 <template>
-  <div class="info page bg2">
+  <div id="info" class="info page bg2">
     <div class="info_title">恭喜你集齐卡牌</div>
     <div class="info_line"></div>
     <div class="info_tips_wrap">
@@ -28,7 +28,6 @@
       </div>
     </div>
     <img class="info_submit" @click="onSubmit()" src="../assets/submit.png" />
-
     <van-popup v-model="showPicker" round position="bottom">
       <van-picker
         show-toolbar
@@ -83,18 +82,35 @@ export default {
       this.campus = val;
       this.showPicker = false;
     },
+    fixHeight() {
+      let windowHeight = window.innerHeight;
+      let windowWidth = window.innerWidth;
+      document.body.style.height = windowHeight + 'px';
+      document.getElementById('info').style.backgroundSize =
+        windowWidth + 'px ' + windowHeight + 'px';
+    },
+  },
+  async mounted() {
+    window.onresize = () => {
+      if (document.activeElement.tagName != 'INPUT') {
+        this.fixHeight();
+      }
+    };
+    this.fixHeight();
   },
 };
 </script>
 
 <style scoped>
 .info {
+  position: relative;
   display: flex;
   display: -webkit-flex;
-  justify-content: center;
   align-items: center;
+  min-height: 100vh;
   flex-direction: column;
 }
+
 .info_line {
   border: 0.5px solid black;
   margin-top: 0.7em;
@@ -103,6 +119,7 @@ export default {
 }
 .info_title {
   font-size: 1.5em;
+  margin-top: 5em;
 }
 .info_tips_wrap {
   margin: 0 15vw;

@@ -43,10 +43,10 @@ export default {
             // 助力
             apis
               .helpFriend(user_id)
-              .then(res => {
+              .then((res) => {
                 Toast.success({ message: res.data.message });
               })
-              .catch(err => {
+              .catch((err) => {
                 Toast.fail({
                   message:
                     err.response.data.message || `未知错误${err.response.data}`,
@@ -84,17 +84,32 @@ body {
   z-index: 10000;
 }
 .page {
-  background-size: 100vw 100vh;
   min-height: 100vh;
   min-width: 100vw;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
 }
-.bg1 {
+.bg1::before {
   background-image: url('./assets/bg1.png');
+  content: ' ';
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
-.bg2 {
+.bg2::before {
   background-image: url('./assets/bg2.png');
+  content: ' ';
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 .loading_wrapper {
   display: flex;

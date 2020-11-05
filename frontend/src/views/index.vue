@@ -7,16 +7,20 @@
     <div class="index_text">每位好友一天只能助力一次哦</div>
     <div class="index_text">(ps.前五位集齐卡牌有神秘小礼物哟)</div>
     <img class="index_go" src="../assets/go.png" @click="go()" />
-    <img class="index_signup" src="../assets/signup.png" />
+    <img class="index_signup" src="../assets/signup.png" @click="signup()" />
   </div>
 </template>
 
 <script>
+import { applicationFormURL } from '../config';
 export default {
   name: 'index',
   methods: {
     go() {
       this.$router.push({ path: '/game' });
+    },
+    signup() {
+      window.location.href = applicationFormURL;
     },
   },
 };

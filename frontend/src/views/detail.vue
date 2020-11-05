@@ -62,9 +62,11 @@ export default {
   display: -webkit-flex;
   align-items: center;
   flex-direction: column;
+  padding: 3vh 0;
+  box-sizing: border-box;
 }
 .detail_img {
-  margin-top: 10.6vh;
+  margin-top: 7.6vh;
   width: 47.8vw;
 }
 .detail_help {

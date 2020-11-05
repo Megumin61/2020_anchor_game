@@ -179,6 +179,8 @@ export default {
   display: -webkit-flex;
   flex-direction: column;
   justify-content: center;
+  padding: 3vh 0;
+  box-sizing: border-box;
 }
 .not_selected {
   user-select: none;
@@ -191,7 +193,7 @@ export default {
   display: -webkit-flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: 3vh;
+  /* margin-top: 3vh; */
 }
 .game_pic {
   /* position: absolute; */

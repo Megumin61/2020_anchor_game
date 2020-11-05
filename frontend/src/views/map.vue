@@ -113,6 +113,8 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 3vh 0;
+  box-sizing: border-box;
 }
 .map_wrap {
   display: flex;
